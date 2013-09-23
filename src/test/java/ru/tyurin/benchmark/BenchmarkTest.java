@@ -7,7 +7,8 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 
 public class BenchmarkTest {
@@ -58,6 +59,7 @@ public class BenchmarkTest {
 	public void testConstructor() throws Exception {
 		Benchmark test = new Benchmark(empty);
 
+
 		assertEquals(empty, test.getRunnable());
 	}
 
@@ -79,71 +81,22 @@ public class BenchmarkTest {
 	}
 
 	@Test
-	public void testRunCount() throws Exception {
-		int c1, c2, c3;
-		Benchmark test = new Benchmark(empty);
-		c1 = test.getCount();
-
-		test.run();
-		c2 = test.getCount();
-
-		test.run();
-		c3 = test.getCount();
-
-		assertEquals(0, c1);
-		assertEquals(1, c2);
-		assertEquals(2, c3);
-	}
-
-	@Test
-	public void testIsRunFalse() throws Exception {
-		Benchmark test = new Benchmark(empty);
-
-		assertFalse(test.isRun());
-	}
-
-	@Test
-	public void testIsRunTrue() throws Exception {
-		Benchmark test = new Benchmark(empty);
-
-		test.run();
-
-		assertTrue(test.isRun());
-	}
-
-	@Test
 	public void testGetMemory() throws Exception {
 		Benchmark test = new Benchmark(big);
 
-		test.run();
+		BenchmarkResult result = test.run();
 
-		long memory = test.getMemory();
-		assertTrue(memory >= 0, "Memory > 0 : " + memory);
+		result.getMemory();
 	}
 
-	@Test(
-			expectedExceptions = IllegalStateException.class
-	)
-	public void testGetMemoryWithoutRun() throws Exception {
-		Benchmark test = new Benchmark(big);
-		test.getMemory();
-	}
 
 	@Test
 	public void testGetTime() throws Exception {
 		Benchmark test = new Benchmark(big);
 
-		test.run();
+		BenchmarkResult result = test.run();
 
-		long time = test.getTime();
+		long time = result.getTime();
 		assertTrue(time > 0);
-	}
-
-	@Test(
-			expectedExceptions = IllegalStateException.class
-	)
-	public void testGetTimeWithoutRun() throws Exception {
-		Benchmark test = new Benchmark(big);
-		test.getTime();
 	}
 }
