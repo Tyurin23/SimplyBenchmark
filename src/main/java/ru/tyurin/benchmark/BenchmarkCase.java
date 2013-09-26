@@ -127,6 +127,7 @@ public class BenchmarkCase {
 			List<BenchmarkResult> res = new ArrayList<BenchmarkResult>();
 			for (int c = 0; c < count; c++) {
 				BenchmarkResult result = benchmark.run();
+				result.setName(String.valueOf(c));
 				res.add(result);
 			}
 			BenchmarkResult total = getTotal(res, benchmark);
