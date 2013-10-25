@@ -6,7 +6,7 @@ import java.util.*;
 public class BenchmarkCase {
 
 	private Set<Benchmark> benchmarks;
-	private Map<Benchmark, List<BenchmarkResult>> results;
+	private Results results;
 	private Map<Benchmark, Integer> counts;
 	private String name = "";
 
@@ -15,7 +15,6 @@ public class BenchmarkCase {
 	 */
 	public BenchmarkCase() {
 		benchmarks = new HashSet<Benchmark>();
-		results = new HashMap<Benchmark, List<BenchmarkResult>>();
 		counts = new HashMap<Benchmark, Integer>();
 	}
 
@@ -121,44 +120,24 @@ public class BenchmarkCase {
 	 * Old result will be cleared
 	 */
 	public void run() {
-		results.clear();
+		results = new Results(getName());
 		for (Benchmark benchmark : benchmarks) {
 			int count = getCount(benchmark);
-			List<BenchmarkResult> res = new ArrayList<BenchmarkResult>();
 			for (int c = 0; c < count; c++) {
 				BenchmarkResult result = benchmark.run();
 				result.setName(String.valueOf(c));
-				res.add(result);
+				results.add(result);
 			}
-			BenchmarkResult total = getTotal(res, benchmark);
-			BenchmarkResult avg = getAVG(res, benchmark);
-			res.add(total);
-			res.add(avg);
-			results.put(benchmark, res);
 		}
 	}
 
 	/**
 	 * Get result of last test
 	 *
-	 * @return Collection of results
+	 * @return Results container of results
 	 */
-	public Collection<BenchmarkResult> getResults() {
-		Collection<BenchmarkResult> results = new ArrayList<BenchmarkResult>();
-		for (Collection<BenchmarkResult> resultList : this.results.values()) {
-			results.addAll(resultList);
-		}
+	public Results getResults() {
 		return results;
-	}
-
-	/**
-	 * Get result of last benchmark test
-	 *
-	 * @param benchmark
-	 * @return Collection of results
-	 */
-	public Collection<BenchmarkResult> getResults(Benchmark benchmark) {
-		return this.results.get(benchmark);
 	}
 
 	/**
@@ -169,29 +148,6 @@ public class BenchmarkCase {
 	public Collection<Benchmark> getBenchmarks() {
 		return benchmarks;
 	}
-
-	/**
-	 * Get summary string
-	 * <p/>
-	 * Return string with all results of last test
-	 *
-	 * @return
-	 */
-	public String getSummary() {
-		StringBuilder builder = new StringBuilder(String.format("Benchmark Case %s%n", getName()));
-		builder.append("\n");
-		for (Benchmark benchmark : benchmarks) {
-			builder.append("\t");
-			builder.append(String.format("Benchmark %s%n", benchmark.getName()));
-			for (BenchmarkResult result : results.get(benchmark)) {
-				builder.append("\t\t");
-				builder.append(String.format("[%s]%n \t\t\t Time: %d \tMemory: %d", result.getName(), result.getTime(), result.getMemory()));
-				builder.append("\n");
-			}
-		}
-		return builder.toString();
-	}
-
 
 	protected int getCount(Benchmark benchmark) {
 		return counts.get(benchmark);
@@ -210,33 +166,5 @@ public class BenchmarkCase {
 		return benchmarks.contains(benchmark);
 	}
 
-	private BenchmarkResult getTotal(Collection<BenchmarkResult> results, Benchmark benchmark) {
-		long time = 0;
-		long mem = 0;
-		BenchmarkResult res = new BenchmarkResult(benchmark, "total");
-		for (BenchmarkResult result : results) {
-			time += result.getTime();
-			mem += result.getMemory();
-		}
-		res.setTime(time);
-		res.setMemory(mem);
-		return res;
-	}
-
-	private BenchmarkResult getAVG(Collection<BenchmarkResult> results, Benchmark benchmark) {
-		long time = 0;
-		long mem = 0;
-		long count = results.size();
-		BenchmarkResult res = new BenchmarkResult(benchmark, "avg");
-		for (BenchmarkResult result : results) {
-			time += result.getTime();
-			mem += result.getMemory();
-		}
-		if (count > 0) {
-			res.setTime(time / count);
-			res.setMemory(mem / count);
-		}
-		return res;
-	}
 
 }
