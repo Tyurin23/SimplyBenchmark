@@ -6,7 +6,6 @@ import java.util.*;
 public class BenchmarkCase {
 
 	private Set<Benchmark> benchmarks;
-	private Results results;
 	private Map<Benchmark, Integer> counts;
 	private String name = "";
 
@@ -116,11 +115,12 @@ public class BenchmarkCase {
 
 	/**
 	 * Run test case
-	 * <p/>
-	 * Old result will be cleared
+	 *
+	 * @return test results
+	 * @see Results
 	 */
-	public void run() {
-		results = new Results(getName());
+	public Results run() {
+		Results results = new Results(getName());
 		for (Benchmark benchmark : benchmarks) {
 			int count = getCount(benchmark);
 			for (int c = 0; c < count; c++) {
@@ -129,14 +129,6 @@ public class BenchmarkCase {
 				results.add(result);
 			}
 		}
-	}
-
-	/**
-	 * Get result of last test
-	 *
-	 * @return Results container of results
-	 */
-	public Results getResults() {
 		return results;
 	}
 
