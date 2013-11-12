@@ -20,16 +20,22 @@ public class BenchmarkCaseIT {
 		}
 	};
 
+	Runnable sleep = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+			}
+		}
+	};
+
 	@BeforeMethod
 	public void setUp() throws Exception {
-
-
 	}
 
 	@AfterMethod
 	public void tearDown() throws Exception {
-
-
 	}
 
 	@Test
@@ -38,5 +44,14 @@ public class BenchmarkCaseIT {
 		BenchmarkCase testCase = new BenchmarkCase();
 		testCase.addBenchmark(benchmark, 100);
 		testCase.run();
+	}
+
+	@Test
+	public void testSingleBenchmark() throws Exception {
+		Benchmark benchmark = new Benchmark(sleep);
+
+		BenchmarkResult result = benchmark.run();
+
+		System.out.println(result.getSummary());
 	}
 }

@@ -4,8 +4,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 public class BenchmarkCaseTest {
 
@@ -46,7 +45,6 @@ public class BenchmarkCaseTest {
 	@Test
 	public void testConstructor() throws Exception {
 		new BenchmarkCase();
-		new BenchmarkCase("TEST");
 	}
 
 	@Test
@@ -116,5 +114,47 @@ public class BenchmarkCaseTest {
 	)
 	public void testAddBenchmarkWithNegativeCount() throws Exception {
 		benchmarkCase.addBenchmark(benchmark, -1);
+	}
+
+	@Test
+	public void testRemoveBenchmark() throws Exception {
+		benchmarkCase.addBenchmark(benchmark);
+
+		boolean removed = benchmarkCase.removeBenchmark(benchmark);
+
+		assertTrue(removed);
+		assertEquals(0, benchmarkCase.getBenchmarks().size());
+	}
+
+	@Test
+	public void testRemoveBenchmark2() throws Exception {
+		Benchmark benchmark2 = new Benchmark(new Runnable() {
+			@Override
+			public void run() {
+			}
+		});
+		benchmarkCase.addBenchmark(benchmark2);
+		benchmarkCase.addBenchmark(benchmark);
+
+		benchmarkCase.removeBenchmark(benchmark);
+
+		assertEquals(1, benchmarkCase.getBenchmarks().size());
+		assertEquals(benchmark2, benchmarkCase.getBenchmarks().toArray()[0]);
+	}
+
+	@Test(
+			expectedExceptions = NullPointerException.class
+	)
+	public void testRemoveBenchmarkNull() throws Exception {
+		benchmarkCase.addBenchmark(benchmark);
+
+		benchmarkCase.removeBenchmark(null);
+	}
+
+	@Test
+	public void testRemoveBenchmarkNotExist() throws Exception {
+		boolean removed = benchmarkCase.removeBenchmark(benchmark);
+
+		assertFalse(removed);
 	}
 }
