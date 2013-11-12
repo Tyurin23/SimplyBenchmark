@@ -109,6 +109,9 @@ public class BenchmarkCase {
 	 * @return True if test removed, or False if not.
 	 */
 	public boolean removeBenchmark(Benchmark benchmark) {
+		if (benchmark == null) {
+			throw new NullPointerException("Benchmark is null");
+		}
 		counts.remove(benchmark);
 		return benchmarks.remove(benchmark);
 	}
