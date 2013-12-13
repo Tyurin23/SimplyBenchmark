@@ -10,6 +10,21 @@ public class BenchmarkCase {
 	private String name = "";
 
 	/**
+	 * Run test repeatedly
+	 *
+	 * @param benchmark Test class
+	 * @param count     Count of starts test
+	 * @return results of test
+	 * @see Results
+	 * @see Benchmark
+	 */
+	public static Results runBenchmark(Benchmark benchmark, int count) {
+		BenchmarkCase benchmarkCase = new BenchmarkCase();
+		benchmarkCase.addBenchmark(benchmark, count);
+		return benchmarkCase.run();
+	}
+
+	/**
 	 * Create Benchmark Case
 	 */
 	public BenchmarkCase() {
