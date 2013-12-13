@@ -7,14 +7,12 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 
 public class BenchmarkTest {
 
 	Runnable empty;
-	TestRunned testRunned;
 	Runnable big;
 
 	class TestRunned implements Runnable {
@@ -53,6 +51,20 @@ public class BenchmarkTest {
 	@AfterMethod
 	public void tearDown() throws Exception {
 
+	}
+
+	@Test
+	public void testStaticRun() throws Exception {
+		BenchmarkResult result = Benchmark.runBenchmark(empty);
+
+		assertNotNull(result);
+	}
+
+	@Test(
+			expectedExceptions = NullPointerException.class
+	)
+	public void testStaticRunNull() throws Exception {
+		Benchmark.runBenchmark(null);
 	}
 
 	@Test

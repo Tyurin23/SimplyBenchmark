@@ -16,6 +16,20 @@ public class Benchmark {
 	private int count = 0;
 
 	/**
+	 * Run test immediately
+	 *
+	 * @param test Test object
+	 * @return result of test
+	 * @throws NullPointerException if test is null
+	 */
+	public static BenchmarkResult runBenchmark(Runnable test) {
+		if (test == null) {
+			throw new NullPointerException("Runnable is null");
+		}
+		return new Benchmark(test).run();
+	}
+
+	/**
 	 * Create Benchmark Test for Runnable object
 	 *
 	 * @param runnable Test object
