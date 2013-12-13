@@ -1,10 +1,12 @@
 import ru.tyurin.benchmark.Benchmark;
 import ru.tyurin.benchmark.BenchmarkCase;
-import ru.tyurin.benchmark.BenchmarkResult;
+import ru.tyurin.benchmark.Results;
+import ru.tyurin.benchmark.printer.DefaultPrinter;
+import ru.tyurin.benchmark.printer.Printer;
 
 public class SimplyExample {
 
-	static Runnable runnable = new Runnable() {
+	static Runnable test = new Runnable() {
 		@Override
 		public void run() {
 			try {
@@ -15,17 +17,33 @@ public class SimplyExample {
 		}
 	};
 
+
 	public static void main(String[] args) {
-		Benchmark test = new Benchmark(runnable, "Simply Test");
-		BenchmarkResult result = test.run();
-		System.out.println(result.getSummary());
+		// Level 1
+		// Run single test
+		System.out.println(Benchmark.runBenchmark(test).getSummary());
 
-		// or ....
+		//Level 2
+		// Run single test 10 times
+		System.out.println(BenchmarkCase.runBenchmark(new Benchmark(test), 10));
 
-		BenchmarkCase testCase = new BenchmarkCase("Simply case");
-		testCase.addBenchmark(test, 10);// run test 10 times
-		testCase.run();
-		System.out.println(testCase.getSummary());
+		//Level 3
+		//Run 2 tests
+		BenchmarkCase benchmarkCase = new BenchmarkCase();
+		//Add test in case
+		benchmarkCase.addBenchmark(new Benchmark(test));
+		//Add test that will run 2 times
+		benchmarkCase.addBenchmark(new Benchmark(new Runnable() {
+			@Override
+			public void run() {
+				// Do anything...
+			}
+		}), 2); // < ----  2 times!!
+		// Run tests
+		Results results = benchmarkCase.run();
+		//Print results
+		Printer printer = new DefaultPrinter();
+		printer.print(results);
 	}
 
 }
