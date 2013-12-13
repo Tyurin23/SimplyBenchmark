@@ -2,13 +2,34 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.tyurin</groupId>
+    <groupId>com.github.tyurin23</groupId>
     <artifactId>SimplyBenchmark</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>SimplyBenchmark</name>
-    <url>http://maven.apache.org</url>
+    <description>Simple Benchmark library</description>
+    <url>https://github.com/Tyurin23/SimplyBenchmark</url>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License (GPL) version 2.0</name>
+            <url>http://www.gnu.org/licenses/gpl-2.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>http://www.gnu.org/licenses/gpl-2.0.html</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>tyurin</id>
+            <name>Yury Tyurin</name>
+            <email>tyurin23@gmail.com</email>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
